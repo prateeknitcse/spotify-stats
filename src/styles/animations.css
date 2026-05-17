@@ -1,0 +1,43 @@
+/* Custom animation utilities beyond what Tailwind provides */
+
+/* Staggered children animation — used in list reveals */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 540ms; }
+
+/* Rank number animation — used in top tracks/artists */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count-up {
+  animation: count-up 0.4s ease-out both;
+}
+
+/* Pulse glow for currently playing indicator */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(29, 185, 84, 0.4); }
+  50%       { box-shadow: 0 0 16px rgba(29, 185, 84, 0.8); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Bar chart entry animation */
+@keyframes bar-grow {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to   { transform: scaleY(1); transform-origin: bottom; }
+}
+
+.animate-bar-grow {
+  animation: bar-grow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
