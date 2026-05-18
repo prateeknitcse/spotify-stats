@@ -1,6 +1,6 @@
 # Feature: 01 — Project Initialization & Architecture Foundation
 
-**Date:** 17/05/2026  
+**Date:** 17/05/2026
 **Module:** 01 of 10  
 **Status:** ✅ Complete
 

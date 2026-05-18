@@ -1,2 +1,4 @@
-// Auth feature — implemented in Module 02
-export { };
+export { LoginButton } from "./components/LoginButton";
+export { FeatureGrid } from "./components/FeatureGrid";
+export { AnimatedBackground } from "./components/AnimatedBackground";
+export { useAuth } from "./hooks/useAuth";

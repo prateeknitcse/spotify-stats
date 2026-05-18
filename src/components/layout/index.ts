@@ -1,2 +1,4 @@
 export { Providers } from "./Providers";
-// AppShell, Sidebar, Topbar will be added in Module 02
+export { AppShell } from "./AppShell";
+export { Sidebar } from "./Sidebar";
+export { Topbar } from "./Topbar";
