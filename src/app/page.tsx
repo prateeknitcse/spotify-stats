@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { BarChart2, Music, Sparkles } from "lucide-react";
@@ -9,25 +9,43 @@ import { LoginButton } from "@/features/auth/components/LoginButton";
 import { FeatureGrid } from "@/features/auth/components/FeatureGrid";
 import { AnimatedBackground } from "@/features/auth/components/AnimatedBackground";
 
-// ─── Landing Page ─────────────────────────────────────────────────────────────
-// Entry point for unauthenticated users.
-// If already authenticated → redirect to dashboard.
-// Shows polished Spotify-branded UI with feature preview.
+// Isolated because useSearchParams() requires Suspense in Next.js 15
+function AuthErrorBanner() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  if (!error) return null;
+
+  const message =
+    error === "session_expired"
+      ? "Your session expired. Please sign in again."
+      : error === "OAuthCallback"
+        ? "OAuth callback failed. Check your Spotify app redirect URI."
+        : error === "Configuration"
+          ? "Server configuration error. Check your environment variables."
+          : "Authentication failed. Please try again.";
+
+  return (
+    <motion.p
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm text-red-400"
+    >
+      ⚠️ {message}
+    </motion.p>
+  );
+}
 
 export default function LandingPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
 
-  // Redirect authenticated users straight to dashboard
   useEffect(() => {
     if (isAuthenticated) {
       router.replace("/dashboard");
     }
   }, [isAuthenticated, router]);
 
-  // While checking auth status, show minimal loading state
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black">
@@ -41,7 +59,7 @@ export default function LandingPage() {
       <AnimatedBackground />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 py-16">
-        {/* ── Header ─────────────────────────────────────────────────────── */}
+        {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,27 +74,24 @@ export default function LandingPage() {
               Spotify Stats
             </span>
           </div>
-
           <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/40">
             <span className="h-1.5 w-1.5 rounded-full bg-[#1DB954]" />
             Free · No credit card
           </div>
         </motion.header>
 
-        {/* ── Hero ───────────────────────────────────────────────────────── */}
+        {/* Hero */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mb-16 text-center"
         >
-          {/* Pill badge */}
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#1DB954]/30 bg-[#1DB954]/10 px-4 py-1.5 text-xs font-medium text-[#1DB954]">
             <Sparkles className="h-3 w-3" />
             Your music. Beautifully visualized.
           </div>
 
-          {/* Headline */}
           <h1 className="mb-5 text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
             Discover your
             <br />
@@ -85,36 +100,24 @@ export default function LandingPage() {
             </span>
           </h1>
 
-          {/* Subheadline */}
           <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-white/50 sm:text-lg">
             Connect your Spotify account and get a deep-dive analytics dashboard
             — top artists, tracks, genre breakdowns, listening patterns, and a
             shareable personality card.
           </p>
 
-          {/* CTA */}
           <div className="flex flex-col items-center gap-4">
             <LoginButton size="lg" />
-
-            {error && (
-              <motion.p
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm text-red-400"
-              >
-                {error === "session_expired"
-                  ? "Your session expired. Please sign in again."
-                  : "Authentication failed. Please try again."}
-              </motion.p>
-            )}
-
+            <Suspense fallback={null}>
+              <AuthErrorBanner />
+            </Suspense>
             <p className="text-xs text-white/25">
               We only read your listening data — we never modify your library.
             </p>
           </div>
         </motion.section>
 
-        {/* ── Stats Bar ──────────────────────────────────────────────────── */}
+        {/* Stats Bar */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -134,7 +137,7 @@ export default function LandingPage() {
           ))}
         </motion.div>
 
-        {/* ── Features Grid ──────────────────────────────────────────────── */}
+        {/* Features */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -146,7 +149,7 @@ export default function LandingPage() {
           <FeatureGrid />
         </motion.section>
 
-        {/* ── Footer ─────────────────────────────────────────────────────── */}
+        {/* Footer */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

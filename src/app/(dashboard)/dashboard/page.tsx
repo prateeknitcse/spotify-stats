@@ -1,24 +1,33 @@
-// Dashboard overview page — implemented fully in Module 03
-// For now: confirms auth flow works end-to-end
+import type { Metadata } from "next";
+import { ProfileHeader } from "@/features/profile/components/ProfileHeader";
+import { CurrentlyPlaying } from "@/features/profile/components/CurrentlyPlaying";
+import { StatsOverview } from "@/features/profile/components/StatsOverview";
+import { QuickTopArtists, QuickTopTracks } from "@/features/profile/components/QuickTopItems";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
+
+// ─── Dashboard Overview Page ──────────────────────────────────────────────────
+// Server component — data fetching happens inside each child client component
+// via TanStack Query. This file is pure composition.
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Your Dashboard</h1>
-        <p className="text-muted-foreground">
-          Auth is working. Profile + stats coming in Module 03.
-        </p>
-      </div>
+    <div className="mx-auto max-w-5xl space-y-8">
+      {/* Profile header */}
+      <ProfileHeader />
 
-      {/* Placeholder grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-32 animate-pulse rounded-2xl border border-border bg-card"
-          />
-        ))}
+      {/* Currently playing — hidden when nothing is playing */}
+      <CurrentlyPlaying />
+
+      {/* Stats overview cards */}
+      <StatsOverview />
+
+      {/* Quick previews */}
+      <div className="grid gap-8 lg:grid-cols-2">
+        <QuickTopArtists />
+        <QuickTopTracks />
       </div>
     </div>
   );

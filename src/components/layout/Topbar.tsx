@@ -1,25 +1,32 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { useAppStore } from "@/stores/useAppStore";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { TIME_RANGE_OPTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-// ─── Topbar ───────────────────────────────────────────────────────────────────
-// Sticky top bar with:
-// - Hamburger menu (mobile only)
-// - Page title (injected via context in future)
-// - Global time range selector (shared across all top-items views)
+const PAGE_TITLES: Record<string, string> = {
+  "/dashboard": "Overview",
+  "/dashboard/artists": "Top Artists",
+  "/dashboard/tracks": "Top Tracks",
+  "/dashboard/genres": "Genre Analytics",
+  "/dashboard/patterns": "Listening Patterns",
+  "/dashboard/personality": "Music Personality",
+};
 
 export function Topbar() {
+  const pathname = usePathname();
   const { toggleSidebar, selectedTimeRange, setSelectedTimeRange } = useAppStore();
   const isMobile = useIsMobile();
 
+  const pageTitle = PAGE_TITLES[pathname] ?? "Dashboard";
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md sm:px-6">
-      {/* ── Left: mobile menu button ── */}
-      <div className="flex items-center gap-4">
+      {/* Left */}
+      <div className="flex items-center gap-3">
         {isMobile && (
           <button
             onClick={toggleSidebar}
@@ -29,14 +36,10 @@ export function Topbar() {
             <Menu className="h-5 w-5" />
           </button>
         )}
-
-        {/* Page title slot — will be populated by each page in future */}
-        <div className="hidden sm:block">
-          <div className="h-4 w-32 rounded bg-muted/50" aria-hidden="true" />
-        </div>
+        <h1 className="text-base font-semibold text-foreground">{pageTitle}</h1>
       </div>
 
-      {/* ── Right: time range selector ── */}
+      {/* Right: time range selector */}
       <nav
         className="flex items-center rounded-xl border border-border bg-card p-1"
         aria-label="Time range"
@@ -54,7 +57,11 @@ export function Topbar() {
             aria-pressed={selectedTimeRange === option.value}
             title={option.description}
           >
-            {option.label}
+            {/* Short labels on mobile */}
+            <span className="sm:hidden">
+              {option.value === "short_term" ? "4W" : option.value === "medium_term" ? "6M" : "All"}
+            </span>
+            <span className="hidden sm:inline">{option.label}</span>
           </button>
         ))}
       </nav>

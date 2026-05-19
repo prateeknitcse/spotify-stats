@@ -1,6 +1,6 @@
 # Feature: 02 — Spotify OAuth Authentication
 
-**Date:** 18/05/2026 
+**Date:** 2025-01  
 **Module:** 02 of 10  
 **Status:** ✅ Complete
 
