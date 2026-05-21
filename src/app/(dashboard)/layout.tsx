@@ -1,14 +1,12 @@
 import { AppShell } from "@/components/layout/AppShell";
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 
-// ─── Dashboard Layout ─────────────────────────────────────────────────────────
-// Applied to all routes inside (dashboard)/ group.
-// Wraps them in the AppShell (sidebar + topbar).
-// Route groups don't affect the URL path — just the layout.
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <AppShell>{children}</AppShell>;
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AppShell>
+      <ErrorBoundary>
+        {children}
+      </ErrorBoundary>
+    </AppShell>
+  );
 }

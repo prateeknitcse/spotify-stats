@@ -1,21 +1,21 @@
 # 🎵 Spotify Stats Dashboard
 
-A production-quality Spotify analytics dashboard — a [stats.fm](https://stats.fm) clone built as a coding challenge.
+A production-quality Spotify analytics dashboard — a [stats.fm](https://stats.fm) clone built as a coding challenge using Next.js 15, TypeScript, Tailwind CSS, and the Spotify Web API.
 
-## Features
+## ✨ Features
 
-- 🔐 Spotify OAuth authentication
-- 👤 User profile dashboard
-- 🎤 Top artists (4 weeks / 6 months / all time)
-- 🎵 Top tracks (4 weeks / 6 months / all time)
-- 🏷️ Genre analytics + visualization
-- 🗺️ Listening behavior heatmaps
-- 🧠 Mood / personality analysis
-- 🃏 Shareable music personality card
-- 📸 Export card as image
-- 📱 Responsive mobile-first UI
+| Feature | Route |
+|---|---|
+| 🔐 Spotify OAuth with auto token refresh | `/` |
+| 👤 User profile dashboard | `/dashboard` |
+| 🎤 Top Artists (4W / 6M / All time) | `/dashboard/artists` |
+| 🎵 Top Tracks with popularity chart | `/dashboard/tracks` |
+| 🏷️ Genre analytics — donut + bars + tag cloud | `/dashboard/genres` |
+| 🗺️ Listening patterns — hour + day heatmaps | `/dashboard/patterns` |
+| 🧠 Music personality & mood analysis | `/dashboard/personality` |
+| 🃏 Shareable card — download PNG / copy | `/dashboard/card` |
 
-## Tech Stack
+## 🛠 Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -25,12 +25,11 @@ A production-quality Spotify analytics dashboard — a [stats.fm](https://stats.
 | Animations | Framer Motion |
 | Charts | Recharts |
 | API | Spotify Web API |
-| State | Zustand |
-| Data Fetching | TanStack Query |
-| Auth | NextAuth.js |
+| Auth | NextAuth.js v4 |
+| State | Zustand (UI) + TanStack Query (server) |
 | Export | html-to-image |
 
-## Getting Started
+## 🚀 Getting Started
 
 ### 1. Clone and install
 
@@ -40,12 +39,11 @@ cd spotify-stats
 npm install
 ```
 
-### 2. Set up Spotify app
+### 2. Create Spotify app
 
 1. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
-2. Create a new app
-3. Add redirect URI: `http://localhost:3000/api/auth/callback/spotify`
-4. Copy Client ID and Client Secret
+2. Create app → add redirect URI: `http://localhost:3000/api/auth/callback/spotify`
+3. Copy **Client ID** and **Client Secret**
 
 ### 3. Configure environment
 
@@ -53,68 +51,68 @@ npm install
 cp .env.example .env.local
 ```
 
-Fill in your `.env.local`:
-
-```
+Fill in `.env.local`:
+```env
 SPOTIFY_CLIENT_ID=your_client_id
 SPOTIFY_CLIENT_SECRET=your_client_secret
-NEXTAUTH_SECRET=run: openssl rand -base64 32
+NEXTAUTH_SECRET=<run: openssl rand -base64 32>
 NEXTAUTH_URL=http://localhost:3000
 ```
 
-### 4. Run development server
+### 4. Run
 
 ```bash
 npm run dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-├── components/             # Globally reusable UI components
-│   ├── layout/             # AppShell, Sidebar, Topbar
-│   ├── shared/             # LoadingSkeleton, ErrorState, EmptyState
-│   └── ui/                 # Shadcn auto-generated components
-├── features/               # Feature-based modules (co-located)
-│   ├── auth/
-│   ├── profile/
-│   ├── top-items/
-│   ├── genres/
-│   ├── heatmap/
-│   └── personality/
-├── hooks/                  # Global reusable hooks
-├── lib/                    # Pure utility libraries
-│   └── spotify/            # Centralized Spotify API client
-├── stores/                 # Zustand global state
-├── styles/                 # Additional CSS
-└── types/                  # TypeScript type definitions
+├── app/                    # Next.js App Router
+│   ├── (auth)/             # Auth route group
+│   ├── (dashboard)/        # Protected dashboard routes
+│   └── api/auth/           # NextAuth handler
+├── components/
+│   ├── layout/             # AppShell, Sidebar, Topbar, Providers
+│   └── shared/             # Skeleton, ErrorState, StatCard, Toast...
+├── features/               # Feature-based modules
+│   ├── auth/               # Login, useAuth
+│   ├── profile/            # ProfileHeader, CurrentlyPlaying
+│   ├── top-items/          # ArtistCard, TrackRow, PopularityChart
+│   ├── genres/             # DonutChart, BarList, TagCloud
+│   ├── heatmap/            # HourlyChart, DayGrid, PatternSummary
+│   └── personality/        # MoodRadar, ShareableCard, usePersonality
+├── hooks/                  # useMediaQuery, useSpotifySession
+├── lib/                    # utils, constants, query-client, spotify client
+├── stores/                 # Zustand app store
+└── types/                  # Spotify + App TypeScript types
 ```
 
-## AI Development Logs
+## 📝 AI Development Logs
 
-All AI-assisted development is documented in `/ai-logs/`:
+See `/ai-logs/` for module-by-module documentation of all AI-assisted decisions.
 
-| Module | Feature | Status |
-|---|---|---|
-| 01 | Project Init & Architecture | ✅ |
-| 02 | Spotify OAuth Auth | 🔜 |
-| 03 | Profile Dashboard | 🔜 |
-| 04 | Top Artists & Tracks | 🔜 |
-| 05 | Genre Analytics | 🔜 |
-| 06 | Listening Heatmaps | 🔜 |
-| 07 | Personality Analysis | 🔜 |
-| 08 | Shareable Card + Export | 🔜 |
+| Module | Feature |
+|---|---|
+| 01 | Project Init & Architecture |
+| 02 | Spotify OAuth |
+| 03 | Profile Dashboard |
+| 04 | Top Artists & Tracks |
+| 05 | Genre Analytics |
+| 06 | Listening Patterns |
+| 07 | Personality Analysis |
+| 08 | Shareable Card & Export |
+| 09 | Responsive Polish & Animations |
+| 10 | Production Hardening |
 
-## Scripts
+## 🧪 Scripts
 
 ```bash
-npm run dev          # Development server
+npm run dev          # Dev server
 npm run build        # Production build
-npm run type-check   # TypeScript check without building
+npm run type-check   # TypeScript check
 npm run lint         # ESLint
 npm run format       # Prettier
 ```
