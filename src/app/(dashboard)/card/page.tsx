@@ -154,7 +154,7 @@ export default function CardPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary">→</span>
-              Use "Copy Image" to paste directly into messages or Discord
+              Use &quot;Copy Image&quot; to paste directly into messages or Discord
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary">→</span>

@@ -102,7 +102,7 @@ function scoreMoods(
   const genreStr = genres.join(" ").toLowerCase();
 
   // Base scores derived from genre keywords
-  let scores: Record<MoodType, number> = {
+  const scores: Record<MoodType, number> = {
     euphoric:    0,
     energetic:   0,
     chill:       0,
