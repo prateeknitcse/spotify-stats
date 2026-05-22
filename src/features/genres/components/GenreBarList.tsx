@@ -24,7 +24,9 @@ export function GenreBarList({ genres, isLoading, limit = 20 }: GenreBarListProp
               <Skeleton className="h-3 w-28" />
               <Skeleton className="h-3 w-8" />
             </div>
-            <Skeleton className="h-2 w-full rounded-full" style={{ width: `${70 - i * 5}%` }} />
+            <div style={{ width: `${70 - i * 5}%` }}>
+  <Skeleton className="h-2 w-full rounded-full" />
+</div>
           </div>
         ))}
       </div>

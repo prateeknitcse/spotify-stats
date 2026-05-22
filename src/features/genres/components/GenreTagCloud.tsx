@@ -19,14 +19,15 @@ export function GenreTagCloud({ genres, isLoading }: GenreTagCloudProps) {
     return (
       <div className="flex flex-wrap gap-2">
         {Array.from({ length: 20 }).map((_, i) => (
-          <Skeleton
-            key={i}
-            className="rounded-full"
-            style={{
-              height: "28px",
-              width: `${Math.random() * 60 + 48}px`,
-            }}
-          />
+          <div
+  key={i}
+  style={{
+    height: "28px",
+    width: `${Math.random() * 60 + 48}px`,
+  }}
+>
+  <Skeleton className="rounded-full w-full h-full" />
+</div>
         ))}
       </div>
     );

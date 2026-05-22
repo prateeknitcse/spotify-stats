@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useMemo as _useMemo } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { spotifyClient } from "@/lib/spotify/client";
