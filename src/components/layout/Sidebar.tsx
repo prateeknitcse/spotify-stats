@@ -50,7 +50,7 @@ export function Sidebar() {
         <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">Analytics</div>
         <ul className="space-y-0.5" role="list">
           {NAV_ITEMS.map((item) => {
-            const active = isActive(item.href, item.exact);
+            const active = isActive(item.href, 'exact' in item ? item.exact : undefined);
             return (
               <li key={item.href}>
                 <Link
